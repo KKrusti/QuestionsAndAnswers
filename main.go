@@ -2,20 +2,26 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"sort"
 )
 
 func main() {
-	fileName := "input.json"
-	questions := readFromFile(fileName)
+	fileName := "resources/input.json"
+	questions, err := readFromFile(fileName)
+	if err != nil {
+		fmt.Printf("error: %v", err)
+	}
 
 	sort.Slice(questions, func(i, j int) bool {
 		return questions[i].Content < questions[j].Content
 	})
 
 	mapOfContents := convertToMap(questions)
+
+	println(mapOfContents)
 }
 
 func convertToMap(questions []Question) map[string][]Question {
@@ -26,16 +32,17 @@ func convertToMap(questions []Question) map[string][]Question {
 	return questionMap
 }
 
-func readFromFile(fileName string) []Question {
+func readFromFile(fileName string) ([]Question, error) {
 	jsonInput, err := os.Open(fileName)
 	if err != nil {
-		fmt.Printf("opening config file %v", err.Error())
+		return nil, errors.New(fmt.Sprintf("opening config file %v", err.Error()))
+
 	}
 
 	jsonParser := json.NewDecoder(jsonInput)
 	questions := make([]Question, 0)
 	if err = jsonParser.Decode(&questions); err != nil {
-		fmt.Printf("parsing config file %v", err.Error())
+		return nil, errors.New(fmt.Sprintf("parsing config file %v", err.Error()))
 	}
-	return questions
+	return questions, nil
 }
