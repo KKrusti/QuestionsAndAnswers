@@ -1,0 +1,87 @@
+[
+  {
+    "id": 12345,
+    "createTimestamp": 1560332122,
+    "content": "What is love?",
+    "answers": [
+      {
+        "id": 1,
+        "rating": 7,
+        "content": "Answer content 1"
+      },
+      {
+        "id": 2,
+        "rating": 3,
+        "content": "Answer content 2"
+      }
+    ]
+  },
+  {
+    "id": 18345,
+    "createTimestamp": 1560332222,
+    "content": "Baby",
+    "answers": [
+      {
+        "id": 3,
+        "rating": 9,
+        "content": "Answer content 3"
+      },
+      {
+        "id": 4,
+        "rating": 5,
+        "content": "Answer content 4"
+      }
+    ]
+  },
+  {
+    "id": 34672,
+    "createTimestamp": 1557655871,
+    "content": "don't hurt me",
+    "answers": [
+      {
+        "id": 7,
+        "rating": 4,
+        "content": "Answer content 7"
+      },
+      {
+        "id": 8,
+        "rating": 4,
+        "content": "Answer content 8"
+      }
+    ]
+  },
+  {
+    "id": 84673,
+    "createTimestamp": 1557655871,
+    "content": "Don't hurt me.",
+    "answers": [
+      {
+        "id": 13,
+        "rating": 4,
+        "content": "Answer content 13"
+      },
+      {
+        "id": 14,
+        "rating": 4,
+        "content": "Answer content 14"
+      }
+    ]
+  },
+  {
+    "id": 84674,
+    "createTimestamp": 1549969871,
+    "content": "No more!",
+    "answers": [
+      {
+        "id": 19,
+        "rating": 4,
+        "content": "Answer content 19"
+      },
+      {
+        "id": 20,
+        "rating": 4,
+        "content": "Answer content 20"
+      }
+    ]
+  }
+]
