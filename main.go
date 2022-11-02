@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"sort"
@@ -10,56 +9,33 @@ import (
 
 func main() {
 	fileName := "input.json"
-	inputB, err := readFile(fileName)
-	if err != nil {
-		fmt.Printf("error happended %v", err)
-	}
-	inputs := unmarshallBytes(inputB)
+	questions := readFromFile(fileName)
 
-	sort.Slice(inputs, func(i, j int) bool {
-		return inputs[i].Content < inputs[j].Content
+	sort.Slice(questions, func(i, j int) bool {
+		return questions[i].Content < questions[j].Content
 	})
 
-	filterByContent(inputs)
-
+	mapOfContents := convertToMap(questions)
 }
 
-func filterByContent(inputs []Input) []Input {
-	var response []Input
-	var higherInput Input
-	for i := 0; i < len(inputs); i++ {
-		input := inputs[i]
-		if i < len(inputs)-1 {
-			if input.Content != inputs[i+1].Content {
-				response = append(response, input)
-			} else {
-				if input.Answers[0].Rating > higherInput.Answers[0].Rating {
-				}
-				higherInput = input
-			}
-		} else {
-			response = append(response, input)
-		}
+func convertToMap(questions []Question) map[string][]Question {
+	questionMap := make(map[string][]Question)
+	for _, question := range questions {
+		questionMap[question.Content] = append(questionMap[question.Content], question)
 	}
-	return response
+	return questionMap
 }
 
-func unmarshallBytes(inputB []byte) []Input {
-	var input []Input
-	err := json.Unmarshal(inputB, &input)
+func readFromFile(fileName string) []Question {
+	jsonInput, err := os.Open(fileName)
 	if err != nil {
-		fmt.Printf("error happended unmarshalling Json%v", err)
+		fmt.Printf("opening config file %v", err.Error())
 	}
-	return input
-}
 
-func readFile(path string) ([]byte, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, errors.New(fmt.Sprintf("error opening file %v", err))
+	jsonParser := json.NewDecoder(jsonInput)
+	questions := make([]Question, 0)
+	if err = jsonParser.Decode(&questions); err != nil {
+		fmt.Printf("parsing config file %v", err.Error())
 	}
-	byteArr := make([]byte, 1024)
-	_, err = file.Read(byteArr)
-
-	return byteArr, nil
+	return questions
 }

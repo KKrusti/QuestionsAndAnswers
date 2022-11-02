@@ -1,6 +1,6 @@
 package main
 
-type Input struct {
+type Question struct {
 	Id              int       `json:"id"`
 	CreateTimestamp int       `json:"createTimestamp"`
 	Content         string    `json:"content"`
