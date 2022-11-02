@@ -21,7 +21,41 @@ func main() {
 
 	mapOfContents := convertToMap(questions)
 
-	println(mapOfContents)
+	response := make([]Question, 0)
+	for _, content := range mapOfContents {
+		response = append(response, getHighestRate(content))
+	}
+
+	sort.Slice(response, func(i, j int) bool {
+		return response[i].Id < response[j].Id
+	})
+
+	out, err := json.Marshal(response)
+
+	fmt.Println(string(out))
+}
+
+func getHighestRate(questions []Question) Question {
+	responseQuestion := questions[0]
+	responseQuestionRate := 0
+	for _, question := range questions {
+		rate := checkHighestRangeAnswer(question.Answers)
+		if responseQuestionRate < rate[0].Rating {
+			responseQuestionRate = rate[0].Rating
+			responseQuestion = question
+		} else if question.CreateTimestamp < responseQuestion.CreateTimestamp {
+			responseQuestionRate = rate[0].Rating
+			responseQuestion = question
+		}
+	}
+	return responseQuestion
+}
+
+func checkHighestRangeAnswer(answers []Answers) []Answers {
+	sort.Slice(answers, func(i, j int) bool {
+		return answers[i].Rating > answers[j].Rating
+	})
+	return answers
 }
 
 func convertToMap(questions []Question) map[string][]Question {
